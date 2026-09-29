@@ -25,7 +25,8 @@ Rejeté : QuadRemesh pour le terrain (lisse les ruptures), 3dfier (LoD1 seulemen
 - Lecture COPC partielle avec laspy : `http_num_threads=6` et nouvelles tentatives sur HTTP 429.
   **Ne pas utiliser `decompression_selection`** : corrompt les Z.
 - Python : `.venv` créé depuis le CPython 3.9 de Rhino 8 (`%USERPROFILE%\.rhinocode\py39-rh8`).
-  `lazrs` récent n'a pas de wheel cp39 → installer avec `--only-binary=:all:`.
+  `lazrs` récent n'a pas de wheel cp39 → `pip install --only-binary=lazrs -r requirements.txt`
+  (versions figées dans `requirements.txt` ; installation complète décrite dans `README.md`).
 - Headless : `rhinoinside.load(r"C:\Program Files\Rhino 8\System", "net8.0")` ; terminer par
   `os._exit(0)` (plantage au finaliseur sinon). pythonnet 3 : convertir les listes en `List[T]`.
 - Un GDAL système (`C:\Program Files\GDAL`) pollue PROJ : roofer doit recevoir ses propres
@@ -39,8 +40,33 @@ Rejeté : QuadRemesh pour le terrain (lisse les ruptures), 3dfier (LoD1 seulemen
 - `dev/zone.py` : zone test Briançon (44.892599016233035, 6.6360779217772725, R = 100 m).
 - `dev/run_test.py` : génère le .3dm de test (toutes méthodes + mesures).
   `.venv/Scripts/python.exe -u dev/run_test.py out/<nom>.3dm`
-- `tools/roofer`, `tools/roofer11` : exécutables roofer 1.0 / 1.1 beta (GPLv3).
+- `tools/roofer`, `tools/roofer11` : exécutables roofer 1.0 / 1.1 beta (GPLv3), décompressés depuis
+  `tools/roofer.zip` / `tools/roofer11.zip` (seules les archives sont versionnées). `run_test.py`
+  appelle toujours roofer (méthodes M4-M6).
 - Dernier fichier validé : `out/test_briancon_v15_vegetation.3dm`.
+
+## Dépôt git et reprise sur un autre poste
+
+- GitHub : https://github.com/andydogbo/3D_bati_topo (branche `main`). Le projet est suivi depuis
+  plusieurs PC et plusieurs comptes Claude : **ce fichier est la seule mémoire partagée**. Y consigner
+  toute décision validée par l'utilisateur, tout piège découvert et la prochaine étape, puis committer.
+- Installation d'un nouveau poste : voir `README.md` (venv depuis le Python de Rhino, roofer, test).
+- `out/`, `data/`, `.venv/` sont ignorés. **Un seul modèle Rhino versionné : le dernier validé**
+  (+ son orthophoto). Quand une nouvelle version est validée : `git rm` l'ancien `.3dm` et son
+  `.jpg`, `git add -f` les nouveaux, mettre à jour « Dernier fichier validé » ci-dessus.
+  Pas de Git LFS (choix de l'utilisateur). Limite GitHub : 100 Mo par fichier (v15 ≈ 67 Mo).
+- L'utilisateur est architecte, habitué à Rhino/Grasshopper ; il désigne les bâtiments faux par
+  leur `id` (texte utilisateur de l'objet) ou le GUID Rhino. Privilégier des dépendances légères
+  compatibles avec le CPython 3.9 de Rhino. Échanges en français.
+
+## Historique des décisions
+
+- 2026-09-24 : livrable = composant GH Python 3 (pas un script CLI) ; dev en headless via rhinoinside.
+  Comparaison des toitures M3 (pans RANSAC maison) vs M4 roofer (3DBAG, référence des bonnes pratiques).
+- 2026-09-25 : M6 (roofer + emprises LiDAR + murs BD TOPO) jugé non satisfaisant → bâtiments en
+  extrusion BD TOPO (M0) en attendant mieux ; code M3-M6 conservé. Terrain, texture et végétation
+  validés (v12 → v15).
+- 2026-09-29 : dépôt GitHub créé ; modèle v15 versionné dans `out/`.
 
 ## Prochaine étape (proposée, en attente de validation)
 

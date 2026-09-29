@@ -14,5 +14,7 @@ out/
 *.log.json
 dev/*.png
 
-# Exécutables tiers (roofer, GPLv3) — à retélécharger
-tools/
+# Exécutables tiers : seules les archives roofer sont versionnées (à décompresser dans tools/)
+tools/*
+!tools/roofer.zip
+!tools/roofer11.zip
