@@ -1,0 +1,18 @@
+# Environnement Python
+.venv/
+__pycache__/
+*.pyc
+
+# Données téléchargées (cache IGN) et sorties générées
+data/
+out/
+*.3dm
+*.3dmbak
+*.rhl
+*.npz
+*.pkl
+*.log.json
+dev/*.png
+
+# Exécutables tiers (roofer, GPLv3) — à retélécharger
+tools/
